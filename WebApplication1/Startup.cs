@@ -1,8 +1,10 @@
 using Infrastructure;
 using Infrastructure.Interfaces;
+using Infrastructure.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -38,6 +40,8 @@ namespace WebApplication1
             options.UseSqlServer(Configuration.GetConnectionString(name: "DatabaseConnection")));
             services.AddScoped<IClubRepository, ClubService>();
             services.AddScoped<IPlayerRepository, PlayerService>();
+            services.AddScoped<IUserRepository, UserService>();
+            services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
             services.AddAutoMapper(typeof(MappingProfile));
             services.AddSwaggerGen(c =>
             {

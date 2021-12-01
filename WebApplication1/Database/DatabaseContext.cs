@@ -16,5 +16,6 @@ namespace WebApplication1.Database
         }
         public DbSet<Club> club { get; set; }
         public DbSet<Player> player { get; set; }
+        public DbSet<User> users { get; set; }
     }
 }

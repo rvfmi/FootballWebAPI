@@ -17,6 +17,6 @@ namespace Infrastructure
         public int TrophyCount { get; set; }
         public string Coach { get; set; }
         public decimal BudgetInformation { get; set; }
-        public List<Player> Players { get; set; }
+        public virtual List<Player> Players { get; set; }
     }
 }
