@@ -12,5 +12,7 @@ namespace Infrastructure.Interfaces
     {
        Task<User> RegisterUser(CreateUserDTO createUserDTO);
        Task Login(LoginUserDTO loginUser);
+       Task<User> ChangePassword(ChangePasswordDTO update, string email);
+
     }
 }

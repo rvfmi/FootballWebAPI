@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Infrastructure;
+using Infrastructure.Exceptions;
 using Infrastructure.ModelsDTO.Club;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -31,15 +32,15 @@ namespace WebApplication1.Services
                 var clubsDTO = _mapper.Map<List<ClubDTO>>(clubs);
                 return clubsDTO;
             }
-            return null;
+                throw new NotFoundException($"Clubs not found!");
         }
         public async Task<Club> GetOneClub(int id)
         {
             var clubs = await _databaseContext.club.SingleAsync(x => x.Id == id);
             if(clubs != null)
-            return clubs;
+                return clubs;
             else
-                return null;
+                throw new NotFoundException($"Club with id {id} not found!");
         }
         public async Task<Club> DeleteOneClub(int id)
         {
@@ -50,13 +51,13 @@ namespace WebApplication1.Services
                 _databaseContext.SaveChanges();
                 return clubs;
             }
-            return null;
+            throw new NotModifiedException("Cannot delete club");
         }
 
         public async Task<Club> AddClub(CreateClubDTO club)
         {
             if (club is null)
-                throw new Exception("Club is null");
+                throw new NotModifiedException("Cannot add club");
             else
             {
                 var clubToAdd = _mapper.Map<Club>(club);
@@ -70,7 +71,7 @@ namespace WebApplication1.Services
         {
             var club = await _databaseContext.club.SingleOrDefaultAsync(x => x.Id == id);
             if (club is null || clubs is null)
-                throw new Exception();
+                throw new NotModifiedException("Cannot modify club");
             else
             {
                 club.Coach = clubs.Coach;

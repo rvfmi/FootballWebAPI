@@ -18,6 +18,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using WebApplication1.Database;
+using WebApplication1.Middlewares;
 using WebApplication1.Services;
 
 namespace WebApplication1
@@ -42,6 +43,7 @@ namespace WebApplication1
             services.AddScoped<IPlayerRepository, PlayerService>();
             services.AddScoped<IUserRepository, UserService>();
             services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+            services.AddScoped<ErrorsMiddleware>();
             services.AddAutoMapper(typeof(MappingProfile));
             services.AddSwaggerGen(c =>
             {
@@ -58,7 +60,7 @@ namespace WebApplication1
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApplication1 v1"));
             }
-
+            app.UseMiddleware<ErrorsMiddleware>();
             app.UseHttpsRedirection();
 
             app.UseRouting();
@@ -69,6 +71,7 @@ namespace WebApplication1
             {
                 endpoints.MapControllers();
             });
+
         }
     }
 }

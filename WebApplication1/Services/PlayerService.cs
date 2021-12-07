@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Infrastructure;
+using Infrastructure.Exceptions;
 using Infrastructure.Interfaces;
 using Infrastructure.Models;
 using Infrastructure.ModelsDTO.Players;
@@ -27,7 +28,7 @@ namespace WebApplication1.Services
         {
             if(player == null)
             {
-                throw new Exception("Player is null");
+                throw new NotModifiedException("Cannot add new player");
             }
             else
             {
@@ -48,7 +49,7 @@ namespace WebApplication1.Services
                 return player;
             }
             else
-                return null;
+                throw new NotModifiedException($"Cannot delete player with id {id}");
         }
 
         public async Task<Player> GetOnePlayer(int id)
@@ -57,7 +58,7 @@ namespace WebApplication1.Services
             if (player != null)
                 return player;
             else
-                return null;
+                throw new NotFoundException($"Player with id {id} not found!");
         }
 
         public async Task<List<PlayerDTO>> GetPlayers()
@@ -68,7 +69,7 @@ namespace WebApplication1.Services
                 var playerDTO = _mapper.Map<List<PlayerDTO>>(player);
                 return playerDTO;
             }
-            return null;
+            throw new NotFoundException("Players not found");
         }
 
         public async Task<List<Player>> GetPlayersByClubId(int id)
@@ -77,14 +78,14 @@ namespace WebApplication1.Services
             if(player != null)
                 return player;
             else
-                return null;
+                throw new NotFoundException($"Player with clubId {id} not found!");
         }
 
         public async Task<Player> UpdatePlayer(UpdatePlayerDTO player, int id)
         {
             var players = await _databaseContext.player.SingleOrDefaultAsync(x => x.Id == id);
             if (players is null || player is null)
-                throw new Exception();
+                throw new NotModifiedException("Cannot modify player");
             else
             {
                 players.Assists = player.Assists;

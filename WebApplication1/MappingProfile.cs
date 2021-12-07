@@ -19,6 +19,7 @@ namespace WebApplication1
             CreateMap<CreateClubDTO, Club>();
             CreateMap<Player, PlayerDTO>();
             CreateMap<CreateUserDTO, User>();
+            CreateMap<ChangePasswordDTO, User>();
         }
     }
 }

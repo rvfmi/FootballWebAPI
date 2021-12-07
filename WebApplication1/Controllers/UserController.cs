@@ -33,5 +33,11 @@ namespace WebApplication1.Controllers
             await _user.Login(login);
             return Ok();
         }
+        [HttpPut]
+        public async Task<IActionResult> UpdatePassword([FromBody] ChangePasswordDTO password, string email)
+        {
+           var pass=  await _user.ChangePassword(password, email);
+           return Ok(pass);
+        }
     }
 }
