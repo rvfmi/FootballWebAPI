@@ -21,23 +21,23 @@ namespace WebApplication1.Controllers
             _user = user;
         }
 
-        [HttpPost]
+        [HttpPost("/RegisterUser")]
         public async Task<IActionResult> AddUser([FromBody] CreateUserDTO create)
         {
             var user = await _user.RegisterUser(create);
             return Created($"api/users/{user.UserId}", user);
         }
-        [HttpPost("/login")]
-        public async Task<IActionResult> LoginUser([FromBody] LoginUserDTO login)
-        {
-            await _user.Login(login);
-            return Ok();
-        }
-        [HttpPut]
+        [HttpPut("/UpdatePassword")]
         public async Task<IActionResult> UpdatePassword([FromBody] ChangePasswordDTO password, string email)
         {
            var pass=  await _user.ChangePassword(password, email);
            return Ok(pass);
+        }
+        [HttpPost("/Login")]
+        public ActionResult Login([FromBody] LoginUserDTO login)
+        {
+            var token = _user.GenerateJwtToken(login);
+            return Ok(token);
         }
     }
 }

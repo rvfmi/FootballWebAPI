@@ -11,8 +11,10 @@ namespace Infrastructure.Interfaces
     public interface IUserRepository
     {
        Task<User> RegisterUser(CreateUserDTO createUserDTO);
-       Task Login(LoginUserDTO loginUser);
        Task<User> ChangePassword(ChangePasswordDTO update, string email);
+       string GenerateJwtToken(LoginUserDTO loginUser);
+
+
 
     }
 }
