@@ -32,13 +32,6 @@ namespace WebApplication1.Services
             //loginUser.Email = update.Email;
             //loginUser.Password = update.OldPassword;
             //await Login(loginUser);
-            if (update.ConfirmPassword != update.Password)
-                    throw new WrongDataException("Wrong password");
-
-            if (update.Password == update.OldPassword)
-            {
-                throw new NotFoundException("Password exists in database");
-            }
             var updatepassword = await _databaseContext.users.SingleOrDefaultAsync(x => x.Email == email);
             string hashedPassword = _hasher.HashPassword(updatepassword, update.Password);
             updatepassword.HashedPassword = hashedPassword;
@@ -61,10 +54,6 @@ namespace WebApplication1.Services
 
         public async Task<User> RegisterUser(CreateUserDTO user)
         {
-            if (!user.Email.Contains("@"))
-                throw new WrongDataException("Wrong email");
-            if (user.ConfirmPassword != user.Password)
-                throw new WrongDataException("The password does not match");
             var userToAdd = _mapper.Map<User>(user);
             string hashedPassword = _hasher.HashPassword(userToAdd, user.Password);
             userToAdd.HashedPassword = hashedPassword;

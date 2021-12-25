@@ -1,6 +1,10 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Infrastructure;
 using Infrastructure.Interfaces;
 using Infrastructure.Models;
+using Infrastructure.ModelsDTO.User;
+using Infrastructure.ModelsDTO.Validators;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -20,6 +24,7 @@ using System.Threading.Tasks;
 using WebApplication1.Database;
 using WebApplication1.Middlewares;
 using WebApplication1.Services;
+using WebApplication1.Validators;
 
 namespace WebApplication1
 {
@@ -36,13 +41,15 @@ namespace WebApplication1
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllers();
+            services.AddControllers().AddFluentValidation();
             services.AddDbContext<DatabaseContext>(options => 
             options.UseSqlServer(Configuration.GetConnectionString(name: "DatabaseConnection")));
             services.AddScoped<IClubRepository, ClubService>();
             services.AddScoped<IPlayerRepository, PlayerService>();
             services.AddScoped<IUserRepository, UserService>();
             services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+            services.AddScoped<IValidator<CreateUserDTO>, CreateUserDtoValidator>();
+            services.AddScoped<IValidator<ChangePasswordDTO>, ChangePasswordDtoValidator>();
             services.AddScoped<ErrorsMiddleware>();
             services.AddAutoMapper(typeof(MappingProfile));
             services.AddSwaggerGen(c =>
