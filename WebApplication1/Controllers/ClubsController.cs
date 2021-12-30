@@ -23,39 +23,19 @@ namespace WebApplication1.Controllers
         public async Task<IActionResult> GetAllClubs()
         {
             var clubs = await _clubService.GetClubs();
-            if (clubs is null)
-                return NotFound();
-            return Ok(clubs);
+            return clubs == null ? NotFound() : Ok(clubs);
         }
         [HttpGet("{id}")]
         public async Task<IActionResult> GetOneClub(int id)
         {
-            try
-            {
-                var clubs = await _clubService.GetOneClub(id);
-                if (clubs is null)
-                    return NotFound();
-                return Ok(clubs);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("The club with this id doesn't exist");
-            }
-}
+            var clubs = await _clubService.GetOneClub(id);
+            return clubs == null ? NotFound() : Ok(clubs);
+        }
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteOneClub(int id)
         {
-            try
-            {
-                var clubs = await _clubService.DeleteOneClub(id);
-                if (clubs is null)
-                    return NotFound();
-                return Ok(clubs);
-            }
-            catch(Exception exx)
-            {
-                throw new Exception("Cannot delete, because the club with this id doesn't exist");
-            }
+            var clubs = await _clubService.DeleteOneClub(id);
+            return clubs == null ? NotFound() : Ok(clubs);
         }
         [HttpPost]
         public async Task<IActionResult> AddClub(CreateClubDTO createClub)

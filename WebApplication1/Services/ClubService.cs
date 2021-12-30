@@ -3,6 +3,7 @@ using Infrastructure;
 using Infrastructure.Exceptions;
 using Infrastructure.ModelsDTO.Club;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,11 +16,13 @@ namespace WebApplication1.Services
     {
         private readonly DatabaseContext _databaseContext;
         private readonly IMapper _mapper;
+        private readonly ILogger<ClubService> _logger;
 
-        public ClubService(DatabaseContext databaseContext, IMapper mapper)
+        public ClubService(DatabaseContext databaseContext, IMapper mapper, ILogger<ClubService> logger)
         {
             _databaseContext = databaseContext;
             _mapper = mapper;
+            _logger = logger;
         }
 
         public async Task<List<ClubDTO>> GetClubs()
@@ -36,7 +39,9 @@ namespace WebApplication1.Services
         }
         public async Task<Club> GetOneClub(int id)
         {
-            var clubs = await _databaseContext.club.SingleAsync(x => x.Id == id);
+            _logger.LogWarning($"Get club with id: {id}");
+
+            var clubs = await _databaseContext.club.SingleOrDefaultAsync(x => x.Id == id);
             if(clubs != null)
                 return clubs;
             else
@@ -44,14 +49,17 @@ namespace WebApplication1.Services
         }
         public async Task<Club> DeleteOneClub(int id)
         {
-            var clubs = await _databaseContext.club.SingleAsync(x => x.Id == id);
+            _logger.LogWarning($"Delete club with id: {id}");
+
+            var clubs = await _databaseContext.club.SingleOrDefaultAsync(x => x.Id == id);
             if (clubs != null)
             {
                 _databaseContext.club.Remove(clubs);
                 _databaseContext.SaveChanges();
                 return clubs;
             }
-            throw new NotModifiedException("Cannot delete club");
+            else
+                throw new NotFoundException($"Cannot delete club with {id}");
         }
 
         public async Task<Club> AddClub(CreateClubDTO club)

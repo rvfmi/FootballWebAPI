@@ -25,33 +25,25 @@ namespace WebApplication1.Controllers
         public async Task<IActionResult> GetAllPlayers()
         {
             var player = await _playerService.GetPlayers();
-            if (player == null)
-                return NotFound();
-            return Ok(player);
+            return player == null ? NotFound() : Ok(player);
         }
         [HttpGet("{id}")]
         public async Task<IActionResult> GetPlayerById(int id)
         {
             var player = await _playerService.GetOnePlayer(id);
-            if (player == null)
-                return NotFound();
-            return Ok(player);
+            return player == null ? NotFound() : Ok(player);
         }
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePlayerById(int id)
         {
             var player = await _playerService.DeleteOnePlayer(id);
-            if (player == null)
-                return NotFound();
-            return Ok(player);
+            return player == null ? NotFound() : Ok(player);
         }
         [HttpGet("ByClub/{id}")]
         public async Task<IActionResult> GetPlayerClubById(int id)
         {
             var player = await _playerService.GetPlayersByClubId(id);
-            if (player == null)
-                return NotFound();
-            return Ok(player);
+            return player == null ? NotFound() : Ok(player);
         }
         [HttpPost]
         public async Task<IActionResult> AddPlayer(Player player)
