@@ -41,10 +41,10 @@ namespace WebApplication1.Services
 
         public async Task<Player> DeleteOnePlayer(int id)
         {
-            var player = await _databaseContext.player.SingleOrDefaultAsync(x => x.Id == id);
+            var player = await _databaseContext.Players.SingleOrDefaultAsync(x => x.Id == id);
             if (player != null)
             {
-                _databaseContext.player.Remove(player);
+                _databaseContext.Players.Remove(player);
                 _databaseContext.SaveChanges();
                 return player;
             }
@@ -54,7 +54,7 @@ namespace WebApplication1.Services
 
         public async Task<Player> GetOnePlayer(int id)
         {
-            var player = await _databaseContext.player.SingleOrDefaultAsync(x => x.Id == id);
+            var player = await _databaseContext.Players.SingleOrDefaultAsync(x => x.Id == id);
             if (player != null)
                 return player;
             else
@@ -63,7 +63,7 @@ namespace WebApplication1.Services
 
         public async Task<List<PlayerDTO>> GetPlayers()
         {
-            var player = await _databaseContext.player.ToListAsync();
+            var player = await _databaseContext.Players.ToListAsync();
             if (player.Count > 0)
             {
                 var playerDTO = _mapper.Map<List<PlayerDTO>>(player);
@@ -74,7 +74,7 @@ namespace WebApplication1.Services
 
         public async Task<List<Player>> GetPlayersByClubId(int id)
         {
-            var player = await _databaseContext.player.Where(x => x.ClubId == id).ToListAsync();
+            var player = await _databaseContext.Players.Where(x => x.ClubId == id).ToListAsync();
             if(player != null)
                 return player;
             else
@@ -83,7 +83,7 @@ namespace WebApplication1.Services
 
         public async Task<Player> UpdatePlayer(UpdatePlayerDTO player, int id)
         {
-            var players = await _databaseContext.player.SingleOrDefaultAsync(x => x.Id == id);
+            var players = await _databaseContext.Players.SingleOrDefaultAsync(x => x.Id == id);
             if (players is null || player is null)
                 throw new NotModifiedException("Cannot modify player");
             else

@@ -5,6 +5,7 @@ using Infrastructure.Interfaces;
 using Infrastructure.Models;
 using Infrastructure.ModelsDTO.User;
 using Infrastructure.ModelsDTO.Validators;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -71,11 +72,13 @@ namespace WebApplication1
             services.AddScoped<IClubRepository, ClubService>();
             services.AddScoped<IPlayerRepository, PlayerService>();
             services.AddScoped<IUserRepository, UserService>();
+            services.AddScoped<IStadiumRepository, StadiumService>();
             services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
             services.AddScoped<IValidator<CreateUserDTO>, CreateUserDtoValidator>();
             services.AddScoped<IValidator<ChangePasswordDTO>, ChangePasswordDtoValidator>();
             services.AddScoped<ErrorsMiddleware>();
             services.AddAutoMapper(typeof(MappingProfile));
+            services.AddMediatR(typeof(Startup));
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApplication1", Version = "v1" });

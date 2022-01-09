@@ -38,7 +38,7 @@ namespace WebApplication1.Services
             //loginUser.Email = update.Email;
             //loginUser.Password = update.OldPassword;
             //await Login(loginUser);
-            var updatepassword = await _databaseContext.users.SingleOrDefaultAsync(x => x.Email == email);
+            var updatepassword = await _databaseContext.Users.SingleOrDefaultAsync(x => x.Email == email);
             string hashedPassword = _hasher.HashPassword(updatepassword, update.Password);
             updatepassword.HashedPassword = hashedPassword;
             await _databaseContext.SaveChangesAsync();
@@ -46,7 +46,7 @@ namespace WebApplication1.Services
         }
         public string GenerateJwtToken(LoginUserDTO loginUser)
         {
-            var user = _databaseContext.users
+            var user = _databaseContext.Users
                 .Include(u => u.Role)
                 .FirstOrDefault(x => x.Email == loginUser.Email);
             if(user is null)
@@ -85,7 +85,7 @@ namespace WebApplication1.Services
             string hashedPassword = _hasher.HashPassword(userToAdd, user.Password);
             userToAdd.HashedPassword = hashedPassword;
             
-            _databaseContext.users.Add(userToAdd);
+            _databaseContext.Users.Add(userToAdd);
             await _databaseContext.SaveChangesAsync();
             return userToAdd;
         }

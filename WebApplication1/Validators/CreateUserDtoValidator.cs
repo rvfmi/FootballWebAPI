@@ -23,7 +23,7 @@ namespace Infrastructure.ModelsDTO.Validators
             RuleFor(x => x.Email)
                 .Custom((value, context) =>
                 {
-                    var emailInUse = dbContext.users.Any(x => x.Email == value);
+                    var emailInUse = dbContext.Users.Any(x => x.Email == value);
                     if (emailInUse)
                     {
                         context.AddFailure("That email is taken");

@@ -27,7 +27,7 @@ namespace WebApplication1.Services
 
         public async Task<List<ClubDTO>> GetClubs()
         {
-            var clubs = await _databaseContext.club
+            var clubs = await _databaseContext.Clubs
                 .Include(x => x.Players)
                 .ToListAsync();
             if (clubs.Count > 0)
@@ -41,7 +41,7 @@ namespace WebApplication1.Services
         {
             _logger.LogWarning($"Get club with id: {id}");
 
-            var clubs = await _databaseContext.club.SingleOrDefaultAsync(x => x.Id == id);
+            var clubs = await _databaseContext.Clubs.SingleOrDefaultAsync(x => x.Id == id);
             if(clubs != null)
                 return clubs;
             else
@@ -51,10 +51,10 @@ namespace WebApplication1.Services
         {
             _logger.LogWarning($"Delete club with id: {id}");
 
-            var clubs = await _databaseContext.club.SingleOrDefaultAsync(x => x.Id == id);
+            var clubs = await _databaseContext.Clubs.SingleOrDefaultAsync(x => x.Id == id);
             if (clubs != null)
             {
-                _databaseContext.club.Remove(clubs);
+                _databaseContext.Clubs.Remove(clubs);
                 _databaseContext.SaveChanges();
                 return clubs;
             }
@@ -69,7 +69,7 @@ namespace WebApplication1.Services
             else
             {
                 var clubToAdd = _mapper.Map<Club>(club);
-                _databaseContext.club.Add(clubToAdd);
+                _databaseContext.Clubs.Add(clubToAdd);
                 await _databaseContext.SaveChangesAsync();
                 return clubToAdd;
             }
@@ -77,7 +77,7 @@ namespace WebApplication1.Services
 
         public async Task<Club> Update(UpdateClubDTO clubs, int id)
         {
-            var club = await _databaseContext.club.SingleOrDefaultAsync(x => x.Id == id);
+            var club = await _databaseContext.Clubs.SingleOrDefaultAsync(x => x.Id == id);
             if (club is null || clubs is null)
                 throw new NotModifiedException("Cannot modify club");
             else

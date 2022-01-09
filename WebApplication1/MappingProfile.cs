@@ -3,6 +3,7 @@ using Infrastructure;
 using Infrastructure.Models;
 using Infrastructure.ModelsDTO.Club;
 using Infrastructure.ModelsDTO.Players;
+using Infrastructure.ModelsDTO.Stadium;
 using Infrastructure.ModelsDTO.User;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,7 @@ namespace WebApplication1
             CreateMap<Player, PlayerDTO>();
             CreateMap<CreateUserDTO, User>();
             CreateMap<ChangePasswordDTO, User>();
+            CreateMap<Stadium, StadiumDTO>();
         }
     }
 }

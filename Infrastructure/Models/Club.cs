@@ -18,5 +18,6 @@ namespace Infrastructure
         public string Coach { get; set; }
         public decimal BudgetInformation { get; set; }
         public virtual List<Player> Players { get; set; }
+        public virtual List<Stadium> Stadiums { get; set; }
     }
 }
