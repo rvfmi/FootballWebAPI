@@ -14,16 +14,16 @@ namespace WebApplication1.Handlers
 {
     public class GetAllStadiumsHandler : IRequestHandler<GetAllStadiumsQuery, List<StadiumDTO>>
     {
-        private readonly IStadiumRepository _stadium;
+        private readonly IStadiumRepository _repository;
 
         public GetAllStadiumsHandler(IStadiumRepository stadium)
         {
-            _stadium = stadium;
+            _repository = stadium;
         }
 
         public async Task<List<StadiumDTO>> Handle(GetAllStadiumsQuery request, CancellationToken cancellationToken)
         {
-            var stadiums = await _stadium.GetStadiums();
+            var stadiums = await _repository.GetStadiums();
             return stadiums;
         }
     }

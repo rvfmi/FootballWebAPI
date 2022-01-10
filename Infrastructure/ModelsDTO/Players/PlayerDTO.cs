@@ -8,7 +8,7 @@ namespace Infrastructure.ModelsDTO.Players
 {
     public class PlayerDTO
     {
-        public string Name { get; set; }
+        public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Position { get; set; }
         public DateTime Year { get; set; }

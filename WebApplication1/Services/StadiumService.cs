@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Infrastructure.Exceptions;
 using Infrastructure.Interfaces;
+using Infrastructure.Models;
 using Infrastructure.ModelsDTO.Stadium;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -21,6 +22,39 @@ namespace WebApplication1.Services
             _database = database;
             _mapper = mapper;
         }
+
+        public async Task<Stadium> CreateStadium(Stadium stadium)
+        {
+            if(stadium != null)
+            {
+                throw new NotModifiedException("Cannot add new stadium");
+            }
+             _database.Stadiums.Add(stadium);
+            await _database.SaveChangesAsync();
+            return stadium;
+
+        }
+
+        public async Task<Stadium> GetStadiumByClubId(int id)
+        {
+            var stadium = await _database.Stadiums.SingleOrDefaultAsync(x => x.ClubId == id);
+            if(stadium != null)
+            {
+                return stadium;
+            }
+            throw new NotFoundException($"Stadiums with ClubId {id} not found!");
+        }
+
+        public async Task<Stadium> GetStadiumById(int id)
+        {
+            var stadium = await _database.Stadiums.SingleOrDefaultAsync(x => x.Id == id);
+            if(stadium != null)
+            {
+                return stadium;
+            }
+            throw new NotFoundException($"Stadiums with id {id} not found!");
+        }
+
         public async Task<List<StadiumDTO>> GetStadiums()
         {
             var stadium = await _database.Stadiums.ToListAsync();
